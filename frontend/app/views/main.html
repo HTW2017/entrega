@@ -1,0 +1,82 @@
+<div class="row">
+        <div class="col-xs-12">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <div class="results-list">
+
+                        <div class="col-xs-12" style="padding: 5px; margin-bottom: 10px;">
+                            <div class="col-xs-12"><h4>Foto time</h4></div>
+                        </div>
+
+                        <div style="margin: 10px auto; width: 622px; height: 50px;">
+                            <button class="btn btn-primary btn-lg" id="snap" ng-click="register()" style="display: inline-block; float: right;">
+                                <span id="snap-take-photo">Registrar</span>
+                                <span id="snap-loading" style="display: none;">Loading</span>
+                            </button>
+                            <input type="text" ng-model="registerName">
+                        </div>
+
+                        <div>
+                            <video ng-click="recognize()"
+                                    id="video"
+                                    autoplay
+                                    height="360"
+                                    width="640"
+                                    style="display: block; margin: 0 auto;"
+                                    ng-class="{
+                                        'full-screen': isFullScreen
+                                    }">            
+                            </video>
+                            <div ng-if="isFullScreen" style="position: fixed; background: #000; top: 0; left: 0; width: 100vw; height: 100vh;"></div>
+                        </div>
+
+                        <div style="margin: 10px auto; width: 622px; height: 50px;">
+                            
+                            <button class="btn btn-warning btn-lg" id="snap" ng-click="recognize()" style="display: inline-block; float: right; margin-right: 10px;">
+                                <span id="snap-take-photo">Reconocer</span>
+                                <span id="snap-loading" style="display: none;">Loading</span>
+                            </button>
+                            <button class="btn btn-lg" id="snap" ng-click="fullScreen()" style="display: inline-block; float: right; margin-right: 10px;">
+                                <span>Full Screen</span>
+                            </button>
+                        </div>
+                        <div style="margin-top: 10px; text-align: left;" class="form-group" id="thumbnails">
+                            <div ng-repeat='photo in photos'
+                                 id="group-{{ photo.id }}"
+                                 class="photo-group"
+                                 style="display: inline-block;margin: 0 5px; position: relative;"
+                                 ng-style="{
+                                    width: photo.thumbnailImage.width,
+                                    height: photo.thumbnailImage.height
+                                }">
+                                <div style="display: block; position: absolute; z-index: 10; background: rgba(0,0,0,0.5); text-align: left;">
+                                    <span ng-if="photo.status === 'uploaded'" style="line-height: 30px; color: #FFF; margin: 10px;">{{ photo.externalImage.transaction.subject_id }}</span>
+                                    <span ng-if="photo.status === 'loading'" style="line-height: 30px; color: #FFF; margin: 10px;">Uploading</span>
+                                    <span ng-if="photo.status === 'failed'" style="line-height: 30px; color: #FFF; margin: 10px;">{{ photo.errors[0] }}</span>
+                                </div>
+                                <div ng-style="{
+                                        width: photo.thumbnailImage.width,
+                                        height: photo.thumbnailImage.height
+                                    }"
+                                    style="overflow: hidden; position: relative;">
+
+                                    <img id="thumbnail-{{ photo.id }}"
+                                         height="{{ photo.thumbnailSize.height }}" 
+                                         width="{{ photo.thumbnailSize.width }}" 
+                                         ng-src="data:image/jpeg;charset=utf-8;base64,{{ photo.image.fullImage }}"
+                                         style="position: absolute;"
+                                         ng-style="{
+                                            top: '-' + photo.thumbnailImage.top,
+                                            left: '-' + photo.thumbnailImage.left,
+                                         }"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="imageContainer" style="display: none;">
+                        </div>
+                        <pre>{{ photos|json }}</pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
